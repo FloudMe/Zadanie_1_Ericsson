@@ -6,12 +6,13 @@
 
 using namespace std;
 
+// function to open and read data in the input file
 void openFile(string name, string &data)
 {
     fstream input;
     input.open(name, ios::in);
 
-    if (input.good() != true)
+    if (input.good() != true) // checking that file is open
     {
         throw runtime_error("Nie otworzono poprawnie pliku");   
     }
@@ -23,9 +24,10 @@ void openFile(string name, string &data)
    
 }
 
-void getData(string& data, int& failed, string& output_data)
+//function for dividing data into 8 bits each and checking if the data is correct
+void getData(string& data, int& failed, string& output_data) // data - data from input file, failed - number of incorect part of data, output_data - corect data that will be saved in a separate file
 {
-    vector <bitset<8>> all_message;
+    vector <bitset<8>> all_message; //all_message is a vector with sliced ​​data, 8 bits each
 
     for (int i = 0; i < data.length(); i += 8)
     {
@@ -40,7 +42,7 @@ void getData(string& data, int& failed, string& output_data)
         for (int i = 0; i < 7; i++)
             sum += message[i];
 
-        if (sum == 0 || (sum - message[7]) % 2 != message[7])
+        if (sum == 0 || (sum - message[7]) % 2 != message[7]) // checking that message is correct
         {
             failed++;
             continue;
@@ -49,6 +51,7 @@ void getData(string& data, int& failed, string& output_data)
     }
 }
 
+//function to save data to the output file
 void saveDataInFile(int numberOfObjectsLoaded, int numberOfObjectsWithError, string correctData)
 {
     fstream output;
